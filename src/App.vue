@@ -1,26 +1,58 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="header">
+    <ul class="header-button-left">
+      <li @click="goHome">Cancel</li>
+    </ul>
+    <ul class="header-button-right">
+      <li @click="nextPage">Next</li>
+    </ul>
+    <img src="./assets/wlogo.png" class="logo" />
+  </div>
+  <Container :post="post" />
+  <button @click="more">더보기</button>
+  <div class="footer">
+    <ul class="footer-button-plus">
+      <input @change="upload" type="file" id="file" class="inputfile" />
+      <label for="file" class="input-plus">+</label>
+    </ul>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Container from "./components/Container.vue";
+import post from "./data";
+import { mapMutations, mapState } from "vuex";
+import axios from "axios";
+axios
+  .get("https://codingapple1.github.io/vue/more1.json")
+  .then(function (result) {
+    console.log(result);
+  });
 
 export default {
-  name: 'App',
+  name: "App",
+  data() {
+    return {
+      post,
+    };
+  },
   components: {
-    HelloWorld
-  }
-}
+    Container,
+  },
+  props: {},
+  computed: {
+    name() {
+      return this.$store.state;
+    },
+    ...mapState(["step", "goHome"]),
+    // ...mapState({ 데이터: "post" }),
+  },
+  methods: {
+    ...mapMutations(["한살더하기", "nextPage", "upload"]),
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import "style.css";
 </style>
